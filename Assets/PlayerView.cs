@@ -14,4 +14,8 @@ public class PlayerView : MonoBehaviour {
     public void SetHp(float hpPercent) {
         hpImage.fillAmount = hpPercent;
     }
+
+    private void Update() {
+        transform.rotation = Quaternion.identity;
+    }
 }
