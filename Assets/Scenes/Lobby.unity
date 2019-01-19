@@ -252,7 +252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 1
-  timeToChangeHero: 1
+  timeToChangeHero: 0.3
   HeroList: {fileID: 1985433874}
   chosenHero: 0
   heroName: {fileID: 1913363015}
@@ -599,7 +599,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 3
-  timeToChangeHero: 1
+  timeToChangeHero: 0.3
   HeroList: {fileID: 1985433874}
   chosenHero: 0
   heroName: {fileID: 711234876}
@@ -1331,7 +1331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 2
-  timeToChangeHero: 1
+  timeToChangeHero: 0.3
   HeroList: {fileID: 1985433874}
   chosenHero: 0
   heroName: {fileID: 164972463}
@@ -1478,7 +1478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 0
-  timeToChangeHero: 0.5
+  timeToChangeHero: 0.3
   HeroList: {fileID: 1985433874}
   chosenHero: 0
   heroName: {fileID: 9925257}
@@ -1939,7 +1939,9 @@ MonoBehaviour:
   - name: Wolek
     heroImage: {fileID: 21300000, guid: 5846f2122c306495dad80d11b507fec3, type: 3}
   - name: Bard
-    heroImage: {fileID: 21300000, guid: 5c052feb385d3435d97053c6a8879c53, type: 3}
+    heroImage: {fileID: 21300000, guid: 9b355a1ca4075433ea14c2c689a66977, type: 3}
+  - name: Bard
+    heroImage: {fileID: 21300000, guid: 9b355a1ca4075433ea14c2c689a66977, type: 3}
 --- !u!4 &1985433875
 Transform:
   m_ObjectHideFlags: 0
