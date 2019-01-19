@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -7,7 +8,6 @@ public class LobbyPlayer : MonoBehaviour
 {
     public int playerNumber = 1;
     public float timeToChangeHero = 1;
-    public bool joined = false;
     public HeroList HeroList = null;
     public int chosenHero = 0;
     public Text heroName;
@@ -17,6 +17,7 @@ public class LobbyPlayer : MonoBehaviour
     private const string INPUT_VERTICAL = "Vertical Player ";
     private const string INPUT_CONFIRM = "Fire1Player";
     private const string INPUT_BACK = "Fire2Player";
+    private const string INPUT_START = "Start";
 
     private string InputConfirm => INPUT_CONFIRM + (playerNumber + 1);
     private string InputBack => INPUT_BACK + (playerNumber + 1);
@@ -24,6 +25,25 @@ public class LobbyPlayer : MonoBehaviour
     private string InputVertical => INPUT_VERTICAL + (playerNumber + 1);
 
     private float changeHeroTimer = 1;
+    private bool joined = false;
+    private bool ready = false;
+
+    void setReady()
+    {
+        if (joined && Input.GetButtonDown(InputConfirm))
+        {
+            joined = false;
+            ready = true;
+            GameState.i.addHero(HeroList.Heroes[chosenHero].name, HeroList.Heroes[chosenHero].heroImage, playerNumber);
+        }
+
+        if (ready && Input.GetButtonDown(InputBack))
+        {
+            joined = true;
+            ready = false;
+            GameState.i.removeHero(HeroList.Heroes[chosenHero].name);
+        }
+    }
 
     void changeHero()
     { 
@@ -56,7 +76,6 @@ public class LobbyPlayer : MonoBehaviour
 
             changeHeroTimer = timeToChangeHero;
         }
-
         heroName.text = HeroList.Heroes[chosenHero].name;
         heroImage.sprite = HeroList.Heroes[chosenHero].heroImage;
         heroImage.color = new Color(255, 255, 255, 255);
@@ -67,11 +86,11 @@ public class LobbyPlayer : MonoBehaviour
         bool joinGame = Input.GetButtonDown(InputConfirm);
         bool leaveGame = Input.GetButtonDown(InputBack);
 
-        if (joinGame)
+        if (!ready && joinGame)
         {
             joined = true;
         }
-        else if (leaveGame)
+        else if (joined && leaveGame)
         {
             joined = false;
             heroImage.color = new Color(255, 255, 255, 0);
@@ -79,11 +98,22 @@ public class LobbyPlayer : MonoBehaviour
         }
     }
 
+    void changeScene()
+    {
+        bool start = Input.GetButtonDown(INPUT_START);
+        if (start && GameState.i.Players.Count >= 2)
+        {
+            SceneManager.LoadScene("SampleScene");
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
         changeHeroTimer -= Time.deltaTime;
+        setReady();
         joinGame();
+        changeScene();
         if(joined)
         {
             changeHero();

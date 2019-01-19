@@ -390,11 +390,11 @@ InputManager:
     axis: 0
     joyNum: 4
   - serializedVersion: 3
-    m_Name: Fire3
+    m_Name: Start
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: joystick button 2
+    positiveButton: joystick button 9
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
