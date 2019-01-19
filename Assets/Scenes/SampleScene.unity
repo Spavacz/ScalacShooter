@@ -1945,6 +1945,8 @@ MonoBehaviour:
   playersContainer: {fileID: 0}
   playerPrefab: {fileID: 5506482883512137761, guid: c809b55fddaf94d3ea075045e0c90426,
     type: 3}
+  playerSpawnerPrefab: {fileID: 6209358577827045852, guid: 1975f6b2b6e4849f0be8ecd4b7d1bc6a,
+    type: 3}
   spawnPoints:
   - {x: -1, y: 0, z: -1}
   - {x: -1, y: 0, z: 1}

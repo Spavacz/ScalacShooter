@@ -67,6 +67,7 @@ public class PlayerController : MonoBehaviour {
 
 	private void Death() {
 		Debug.Log("Die!!!");
+		GetComponentInParent<PlayerSpawner>().StartSpawn();
 		Destroy(gameObject);
 	}
 }
