@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour {
 		rig = GetComponent<Rigidbody>();
 		weapon = GetComponent<PlayerWeaponController>();
 		hp = maxHp;
+		audioSource = GameObject.Find("shotSfx").GetComponent<AudioSource>();
 	}
 
 	private void Update() {

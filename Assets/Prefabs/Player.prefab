@@ -186,12 +186,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   view: {fileID: 8617107728308059355}
-  speed: 300
+  speed: 400
   audioSource: {fileID: 0}
   movementAudio: {fileID: 8300000, guid: 95ef0cedf62a4431986311804bff2334, type: 3}
   movementAudioBreak: 0.3
   maxHp: 5
-  playerView: {fileID: 0}
 --- !u!114 &8364725847983429439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,7 +212,7 @@ MonoBehaviour:
   weaponRotator: {fileID: 1304192789979027122}
   playerNumber: 0
   speed: 1000
-  attackCooldown: 0.01
+  attackCooldown: 0.3
 --- !u!1001 &3352392939614842968
 PrefabInstance:
   m_ObjectHideFlags: 0
