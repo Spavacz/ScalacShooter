@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour {
 
 	public float speed = 5f;
 
+	private PlayerWeaponController weapon;
 	private Rigidbody rig;
 
 	private string InputHorizontal => INPUT_HORIZONTAL + (playerNumber + 1);
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour {
 
 	private void Awake() {
 		rig = GetComponent<Rigidbody>();
+		weapon = GetComponent<PlayerWeaponController>();
 	}
 
 	private void Update() {
@@ -24,18 +26,18 @@ public class PlayerController : MonoBehaviour {
 
 		if (moveVector != Vector3.zero) {
 			var rotation = Quaternion.LookRotation(moveVector, Vector3.up);
-			transform.rotation = rotation;			
+			transform.rotation = rotation;
 		}
 	}
 
 	public void SetPlayer(int playerNumber) {
 		this.playerNumber = playerNumber;
+		weapon.playerNumber = playerNumber;
 	}
 
 	private void OnDrawGizmos() {
 		Gizmos.color = Color.red;
 		Vector3 targetForward = transform.rotation * Vector3.forward * 2;
-		//Debug.Log(targetForward);
 		Gizmos.DrawLine(transform.position, transform.position + targetForward);
 	}
 }
