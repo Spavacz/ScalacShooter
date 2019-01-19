@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour {
 	private float radius = 0.5f;
 
 	
-	private Rigidbody2D rig;
+	private Rigidbody rig;
 
 	private string InputHorizontal => INPUT_HORIZONTAL + (playerNumber + 1);
 	private string InputVertical => INPUT_VERTICAL + (playerNumber + 1);
@@ -15,36 +15,32 @@ public class PlayerController : MonoBehaviour {
 	private int playerNumber;
 
 	private void Awake() {
-		rig = GetComponent<Rigidbody2D>();
+		rig = GetComponent<Rigidbody>();
 	}
 
 	private void Update() {
 		var inputVector = new Vector3(Input.GetAxis(InputHorizontal), 0, Input.GetAxis(InputVertical));
 		var moveVector = inputVector * speed * Time.deltaTime;
-		
-		//transform.Translate(moveVector);
 
-		//Debug.Log(move.magnitude);
-		var hits = Physics.RaycastAll(transform.position, moveVector, radius + moveVector.magnitude, unwalkableLayer);
-		if (hits.Length > 0) {
-			foreach (var hit in hits) {
-				if (hit.transform == transform) {
-					continue;
-				}
-				if (hit.transform.CompareTag("Wall") || hit.transform.CompareTag("Player")) {
-					Debug.Log("X");
-					var newVector = moveVector.normalized * (hit.distance - radius);
-					if (newVector.magnitude < moveVector.magnitude) {
-						moveVector = newVector;
-					}
-				}
-			}
-		}
-//		if (Physics.RaycastAll(transform.position, moveVector, out var hit, radius + moveVector.magnitude, unwalkableLayer)) {
-//			moveVector = moveVector.normalized * (hit.distance - radius);
+		rig.velocity = moveVector;
+
+//		var hits = Physics.RaycastAll(transform.position, moveVector, radius + moveVector.magnitude, unwalkableLayer);
+//		if (hits.Length > 0) {
+//			foreach (var hit in hits) {
+//				if (hit.transform == transform) {
+//					continue;
+//				}
+//				if (hit.transform.CompareTag("Wall") || hit.transform.CompareTag("Player")) {
+//					Debug.Log("X");
+//					var newVector = moveVector.normalized * (hit.distance - radius);
+//					if (newVector.magnitude < moveVector.magnitude) {
+//						moveVector = newVector;
+//					}
+//				}
+//			}
 //		}
 
-		transform.position += moveVector;
+		//transform.position += moveVector;
 	}
 
 	public void SetPlayer(int playerNumber) {
