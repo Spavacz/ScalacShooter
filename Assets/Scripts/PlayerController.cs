@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
+
 public class PlayerController : MonoBehaviour {
-	public float speed = 5f;
-	public LayerMask unwalkableLayer;
 	private const string INPUT_HORIZONTAL = "Horizontal Player ";
 	private const string INPUT_VERTICAL = "Vertical Player ";
-	private float radius = 0.5f;
 
-	
+	public float speed = 5f;
+
 	private Rigidbody rig;
 
 	private string InputHorizontal => INPUT_HORIZONTAL + (playerNumber + 1);
@@ -21,29 +20,22 @@ public class PlayerController : MonoBehaviour {
 	private void Update() {
 		var inputVector = new Vector3(Input.GetAxis(InputHorizontal), 0, Input.GetAxis(InputVertical));
 		var moveVector = inputVector * speed * Time.deltaTime;
-
 		rig.velocity = moveVector;
 
-//		var hits = Physics.RaycastAll(transform.position, moveVector, radius + moveVector.magnitude, unwalkableLayer);
-//		if (hits.Length > 0) {
-//			foreach (var hit in hits) {
-//				if (hit.transform == transform) {
-//					continue;
-//				}
-//				if (hit.transform.CompareTag("Wall") || hit.transform.CompareTag("Player")) {
-//					Debug.Log("X");
-//					var newVector = moveVector.normalized * (hit.distance - radius);
-//					if (newVector.magnitude < moveVector.magnitude) {
-//						moveVector = newVector;
-//					}
-//				}
-//			}
-//		}
-
-		//transform.position += moveVector;
+		if (moveVector != Vector3.zero) {
+			var rotation = Quaternion.LookRotation(moveVector, Vector3.up);
+			transform.rotation = rotation;			
+		}
 	}
 
 	public void SetPlayer(int playerNumber) {
 		this.playerNumber = playerNumber;
+	}
+
+	private void OnDrawGizmos() {
+		Gizmos.color = Color.red;
+		Vector3 targetForward = transform.rotation * Vector3.forward * 2;
+		//Debug.Log(targetForward);
+		Gizmos.DrawLine(transform.position, transform.position + targetForward);
 	}
 }
