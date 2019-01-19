@@ -9,6 +9,7 @@ TagManager:
   - Bullet Player 2
   - Bullet Player 3
   - Bullet Player 4
+  - Medkit
   layers:
   - Default
   - TransparentFX

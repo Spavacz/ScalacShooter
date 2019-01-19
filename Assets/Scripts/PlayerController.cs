@@ -52,10 +52,16 @@ public class PlayerController : MonoBehaviour {
 		var tag = hit.transform.tag;
 		if (tag.Contains("Bullet Player ") && tag != "Bullet Player " + (playerNumber + 1)) {
 			hp--;
-			view.SetHp(hp / (float)maxHp);
-			if (hp == 0) {
-				Death();
-			}
+		}
+
+		if (tag.Equals("Medkit")) {
+			hp = maxHp;
+			hit.transform.GetComponent<Medkit>().Pickup();
+		}
+		
+		view.SetHp(hp / (float)maxHp);
+		if (hp == 0) {
+			Death();
 		}
 	}
 
