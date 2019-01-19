@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
+	public PlayerView view;
+
 	private const string INPUT_HORIZONTAL = "Horizontal Player ";
 	private const string INPUT_VERTICAL = "Vertical Player ";
 
@@ -49,6 +51,7 @@ public class PlayerController : MonoBehaviour {
 		var tag = hit.transform.tag;
 		if (tag.Contains("Bullet Player ") && tag != "Bullet Player " + (playerNumber + 1)) {
 			hp--;
+			view.SetHp(hp / (float)maxHp);
 			if (hp == 0) {
 				Death();
 			}
