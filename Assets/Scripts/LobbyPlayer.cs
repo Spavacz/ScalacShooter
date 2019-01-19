@@ -2,15 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LobbyControler : MonoBehaviour
+public class LobbyPlayer : MonoBehaviour
 {
-    public bool player1Active = false;
-    public bool player2Active = false;
-    public bool player3Active = false;
-    public bool player4Active = false;
-
-
-
     // Start is called before the first frame update
     void Start()
     {
