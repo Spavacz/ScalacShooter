@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour {
 	private int hp;
 	public int maxHp = 5;
 
+	public PlayerView playerView;
+	
 	private void Awake() {
 		rig = GetComponent<Rigidbody>();
 		weapon = GetComponent<PlayerWeaponController>();
