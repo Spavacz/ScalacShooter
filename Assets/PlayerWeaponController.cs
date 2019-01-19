@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerWeaponController : MonoBehaviour {
-	public GameObject projectilePrefab;
+	public List<GameObject> projectilePrefabs;
 
 	public Transform spawnPoint;
 	public Transform weaponRotator;
@@ -23,11 +24,13 @@ public class PlayerWeaponController : MonoBehaviour {
 
 	private void Update() {
 		inputVector = new Vector3(Input.GetAxis(InputHorizontal), 0, Input.GetAxis(InputVertical)).normalized;
-		var rotation = Quaternion.LookRotation(inputVector, Vector3.up);
-		weaponRotator.rotation = rotation;
-		if (currentAttackCooldown <= 0 && inputVector != Vector3.zero) {
-			currentAttackCooldown = attackCooldown;
-			FireWeapon(inputVector);
+		if (inputVector != Vector3.zero) {
+			var rotation = Quaternion.LookRotation(inputVector, Vector3.up);
+			weaponRotator.rotation = rotation;
+			if (currentAttackCooldown <= 0) {
+				currentAttackCooldown = attackCooldown;
+				FireWeapon(inputVector);
+			}
 		}
 
 		currentAttackCooldown -= Time.deltaTime;
@@ -35,7 +38,7 @@ public class PlayerWeaponController : MonoBehaviour {
 
 	private void FireWeapon(Vector3 inputVector) {
 		//var rotation = Quaternion.LookRotation(inputVector, Vector3.up);
-		var projectile = Instantiate(projectilePrefab, spawnPoint.position, weaponRotator.rotation).GetComponent<Rigidbody>();
+		var projectile = Instantiate(projectilePrefabs[playerNumber], spawnPoint.position, weaponRotator.rotation).GetComponent<Rigidbody>();
 //		projectile.AddForce(inputVector * speed);
 
 		projectile.AddForce(projectile.transform.forward * speed);

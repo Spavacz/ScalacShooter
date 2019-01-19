@@ -14,9 +14,13 @@ public class PlayerController : MonoBehaviour {
 
 	private int playerNumber;
 
+	private int hp;
+	public int maxHp = 5;
+
 	private void Awake() {
 		rig = GetComponent<Rigidbody>();
 		weapon = GetComponent<PlayerWeaponController>();
+		hp = maxHp;
 	}
 
 	private void Update() {
@@ -39,5 +43,20 @@ public class PlayerController : MonoBehaviour {
 		Gizmos.color = Color.red;
 		Vector3 targetForward = transform.rotation * Vector3.forward * 2;
 		Gizmos.DrawLine(transform.position, transform.position + targetForward);
+	}
+
+	private void OnCollisionEnter(Collision hit) {
+		var tag = hit.transform.tag;
+		if (tag.Contains("Bullet Player ") && tag != "Bullet Player " + (playerNumber + 1)) {
+			hp--;
+			if (hp == 0) {
+				Death();
+			}
+		}
+	}
+
+	private void Death() {
+		Debug.Log("Die!!!");
+		Destroy(gameObject);
 	}
 }

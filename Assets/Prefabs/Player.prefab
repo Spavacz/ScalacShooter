@@ -185,6 +185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 300
+  maxHp: 5
 --- !u!114 &8364725847983429439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,9 +198,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca15d0659f22e4b3098f3ffbb3d45262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 128572, guid: 91597bf988668fb4cbac05bf2c3a7d19, type: 3}
+  projectilePrefabs:
+  - {fileID: 128572, guid: 91597bf988668fb4cbac05bf2c3a7d19, type: 3}
+  - {fileID: 128572, guid: 471bfc037c6513e4b9e7315cb799c944, type: 3}
+  - {fileID: 128572, guid: b504fe6f986133d44840fab156407516, type: 3}
+  - {fileID: 128572, guid: 04332ddfc8612384e96b2ee753f33422, type: 3}
   spawnPoint: {fileID: 2238750829633213035}
   weaponRotator: {fileID: 1304192789979027122}
   playerNumber: 0
-  speed: 500
+  speed: 1000
   attackCooldown: 0.3
