@@ -19,8 +19,6 @@ public class PlayerController : MonoBehaviour {
 	private int hp;
 	public int maxHp = 5;
 
-	public PlayerView playerView;
-	
 	private void Awake() {
 		rig = GetComponent<Rigidbody>();
 		weapon = GetComponent<PlayerWeaponController>();
@@ -41,6 +39,7 @@ public class PlayerController : MonoBehaviour {
 	public void SetPlayer(int playerNumber) {
 		this.playerNumber = playerNumber;
 		weapon.playerNumber = playerNumber;
+		view.Init(GameState.i.Players[playerNumber]);
 	}
 
 	private void OnDrawGizmos() {
