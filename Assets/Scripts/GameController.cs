@@ -18,5 +18,6 @@ public class GameController : MonoBehaviour {
 		var player = Instantiate(playerPrefab, playersContainer).GetComponent<PlayerController>();
 		player.transform.localPosition = spawnPoints[playerNumber % spawnPoints.Count];
 		player.SetPlayer(playerNumber);
+		player.audioSource = Camera.main.gameObject.GetComponentInChildren<AudioSource>();
 	}
 }

@@ -7,14 +7,17 @@ public class PlayerController : MonoBehaviour {
 	private const string INPUT_VERTICAL = "Vertical Player ";
 
 	public float speed = 5f;
-
+	public AudioSource audioSource;
+	public AudioClip movementAudio;
+	public float movementAudioBreak = 0.5f;
+	
 	private PlayerWeaponController weapon;
 	private Rigidbody rig;
 
 	private string InputHorizontal => INPUT_HORIZONTAL + (playerNumber + 1);
 	private string InputVertical => INPUT_VERTICAL + (playerNumber + 1);
-
 	private int playerNumber;
+	private float timeToNextAudio = 0;
 
 	private int hp;
 	public int maxHp = 5;
@@ -27,6 +30,13 @@ public class PlayerController : MonoBehaviour {
 
 	private void Update() {
 		var inputVector = new Vector3(Input.GetAxis(InputHorizontal), 0, Input.GetAxis(InputVertical));
+		if (inputVector.magnitude > 0 && timeToNextAudio <= 0)
+		{
+			audioSource.PlayOneShot(movementAudio);
+			timeToNextAudio = movementAudioBreak;
+		}
+
+		timeToNextAudio -= Time.deltaTime;
 		var moveVector = inputVector * speed * Time.deltaTime;
 		rig.velocity = moveVector;
 
