@@ -5,10 +5,10 @@ public class GameController : MonoBehaviour {
 	public Transform playersContainer;
 	public GameObject playerPrefab;
 
-	private int numberOfPlayers = GameState.i.Players.Count;
 	public List<Vector3> spawnPoints;
 
 	private void Start() {
+		var numberOfPlayers = GameState.i.Players.Count;
 		for (var i = 0; i < numberOfPlayers; i++) {
 			SpawnPlayer(i);
 		}
