@@ -1,16 +1,19 @@
 ﻿<Properties StartupConfiguration="{8A2E1FD9-B204-3383-003E-76A4D2EA330B}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/LobbyControler.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/LobbyPlayer.cs">
     <Files>
-      <File FileName="Assets/Scripts/PlayerController.cs" Line="10" Column="37" />
-      <File FileName="Assets/Scripts/LobbyControler.cs" Line="22" Column="6" />
-      <File FileName="Assets/Scripts/LobbyPlayer.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/LobbyControler.cs" Line="2" Column="1" />
+      <File FileName="Assets/Scripts/PlayerController.cs" Line="6" Column="40" />
+      <File FileName="Assets/Scripts/LobbyPlayer.cs" Line="47" Column="33" />
+      <File FileName="Assets/Scripts/HeroList.cs" Line="13" Column="33" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/adam/Desktop/ScalacShooter/Assets/Scripts/LobbyPlayer.cs" relfile="Assets/Scripts/LobbyPlayer.cs" line="14" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>
