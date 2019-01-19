@@ -5,7 +5,7 @@ public class GameController : MonoBehaviour {
 	public Transform playersContainer;
 	public GameObject playerPrefab;
 
-	public int numberOfPlayers = 4;
+	private int numberOfPlayers = GameState.i.Players.Count;
 	public List<Vector3> spawnPoints;
 
 	private void Start() {
