@@ -24,9 +24,8 @@ public class GameController : MonoBehaviour {
 		spawner.playerNumber = playerNumber;
 	}
 	
-//	private void SpawnPlayer(int playerNumber) {
-//		var player = Instantiate(playerPrefab, playersContainer).GetComponent<PlayerController>();
-//		player.transform.localPosition = spawnPoints[playerNumber % spawnPoints.Count];
-//		player.SetPlayer(playerNumber);
-//	}
+	private void OnDrawGizmos() {
+		Gizmos.color = Color.green;
+		spawnPoints.ForEach(pos => { Gizmos.DrawWireSphere(pos, 0.3f); });
+	}
 }

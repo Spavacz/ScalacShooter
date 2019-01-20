@@ -5,6 +5,8 @@ using UnityEngine;
 public class MedkitSpawner : MonoBehaviour {
 	public GameObject medkitPrefab;
 
+	public List<Vector3> positions;
+
 	private void Start() {
 		Spawn();
 	}
@@ -19,7 +21,12 @@ public class MedkitSpawner : MonoBehaviour {
 	}
 
 	private void Spawn() {
-		var medkit =Instantiate(medkitPrefab, transform.position, Quaternion.identity);
+		var pos = positions[Random.Range(0, positions.Count)];
+		var medkit = Instantiate(medkitPrefab, pos, Quaternion.identity);
 		medkit.transform.parent = transform;
+	}
+
+	private void OnDrawGizmos() {
+		positions.ForEach(pos => { Gizmos.DrawWireSphere(pos, 0.3f); });
 	}
 }
