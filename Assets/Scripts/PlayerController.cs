@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour {
 		audioSource = GameObject.Find("shotSfx").GetComponent<AudioSource>();
 	}
 
-	private void Update() {
+	private void FixedUpdate() {
 		var inputVector = new Vector3(Input.GetAxis(InputHorizontal), 0, Input.GetAxis(InputVertical));
 		if (inputVector.magnitude > 0 && timeToNextAudio <= 0)
 		{
@@ -37,8 +37,8 @@ public class PlayerController : MonoBehaviour {
 			timeToNextAudio = movementAudioBreak;
 		}
 
-		timeToNextAudio -= Time.deltaTime;
-		var moveVector = inputVector * speed * Time.deltaTime;
+		timeToNextAudio -= Time.fixedDeltaTime;
+		var moveVector = inputVector * speed * Time.fixedDeltaTime;
 		rig.velocity = moveVector;
 
 		if (moveVector != Vector3.zero) {
@@ -63,6 +63,9 @@ public class PlayerController : MonoBehaviour {
 		var tag = hit.transform.tag;
 		if (tag.Contains("Bullet Player ") && tag != "Bullet Player " + (playerNumber + 1)) {
 			hp--;
+			if (hp == 0) {
+				Death(hit.transform.tag);
+			}
 		}
 
 		if (tag.Equals("Medkit")) {
@@ -71,13 +74,24 @@ public class PlayerController : MonoBehaviour {
 		}
 		
 		view.SetHp(hp / (float)maxHp);
-		if (hp == 0) {
-			Death();
-		}
 	}
 
-	private void Death() {
+	private void Death(string deathTag) {
 		Debug.Log("Die!!!");
+		switch (deathTag) {
+			case "Bullet Player 1":
+				GameController.score[0]++;
+				break;
+			case "Bullet Player 2":
+				GameController.score[1]++;
+				break;
+			case "Bullet Player 3":
+				GameController.score[2]++;
+				break;
+			case "Bullet Player 4":
+				GameController.score[3]++;
+				break;
+		}
 		GetComponentInParent<PlayerSpawner>().StartSpawn();
 		Destroy(gameObject);
 	}

@@ -2,6 +2,9 @@
 using UnityEngine;
 
 public class GameController : MonoBehaviour {
+	
+	public static int[] score = new int[4];
+	
 	public Transform playersContainer;
 	public GameObject playerPrefab;
 	public GameObject playerSpawnerPrefab;
