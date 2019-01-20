@@ -189,7 +189,7 @@ MonoBehaviour:
   speed: 400
   audioSource: {fileID: 0}
   movementAudio: {fileID: 8300000, guid: 95ef0cedf62a4431986311804bff2334, type: 3}
-  movementAudioBreak: 0.3
+  movementAudioBreak: 0.15
   maxHp: 5
 --- !u!114 &8364725847983429439
 MonoBehaviour:
