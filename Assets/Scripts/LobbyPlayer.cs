@@ -1,105 +1,125 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
+﻿using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 
 public class LobbyPlayer : MonoBehaviour {
-	public int playerNumber = 1;
-	public float timeToChangeHero = 1;
-	public HeroList HeroList = null;
-	public int chosenHero = 0;
-	public Text heroName;
+	public int playerNumber;
+	public HeroList HeroList;
+	public int chosenHero;
+	public TextMeshProUGUI heroName;
 	public Image heroImage;
 
 	private const string INPUT_HORIZONTAL = "Horizontal Player ";
 	private const string INPUT_VERTICAL = "Vertical Player ";
 	private const string INPUT_CONFIRM = "Fire1Player";
 	private const string INPUT_BACK = "Fire2Player";
-	private const string INPUT_START = "Start";
 
-	private string InputConfirm => INPUT_CONFIRM + (playerNumber + 1);
-	private string InputBack => INPUT_BACK + (playerNumber + 1);
-	private string InputHorizontal => INPUT_HORIZONTAL + (playerNumber + 1);
-	private string InputVertical => INPUT_VERTICAL + (playerNumber + 1);
+	private string InputConfirm => INPUT_CONFIRM + (inputNumber + 1);
+	private string InputBack => INPUT_BACK + (inputNumber + 1);
+	private string InputHorizontal => INPUT_HORIZONTAL + (inputNumber + 1);
+	private string InputVertical => INPUT_VERTICAL + (inputNumber + 1);
 
-	private float changeHeroTimer = 1;
-	private bool joined = false;
-	private bool ready = false;
+	private bool playerChanged;
 
-	void setReady() {
-		if (joined && Input.GetButtonDown(InputConfirm)) {
-			joined = false;
-			ready = true;
-			GameState.i.addHero(HeroList.Heroes[chosenHero].name, HeroList.Heroes[chosenHero].heroImage, playerNumber);
-		}
+	private enum PlayerState {
+		NO_PLAYER,
+		JOINED,
+		READY
+	}
 
-		if (ready && Input.GetButtonDown(InputBack)) {
-			joined = true;
-			ready = false;
-			GameState.i.removeHero(HeroList.Heroes[chosenHero].name);
+	private PlayerState playerState;
+
+	private int inputNumber = -1;
+
+	private void Awake() {
+		heroName.text = "";
+		heroImage.color = Color.clear;
+	}
+
+	private void Start() {
+		if (GameState.i.ReadyPlayers.Count > 0) {
+			var heroesName = GameState.i.ReadyPlayers.Find(p => p.playerNumber == playerNumber).heroName;
+			if (heroesName != null) {
+				chosenHero = HeroList.Heroes.FindIndex(h => h.name.Equals(heroesName));
+			}			
+			GameState.i.ReadyPlayers = new List<GameState.PlayerHero>();
 		}
 	}
 
-	void changeHero() {
-		var inputVector = new Vector3(Input.GetAxis(InputHorizontal), 0, Input.GetAxis(InputVertical));
-		if (playerNumber == 3 && Input.GetKeyDown(KeyCode.LeftArrow)) {
-			inputVector = new Vector3(-1, 0, 0);
-		} else if (playerNumber == 3 && Input.GetKeyDown(KeyCode.RightArrow)) {
-			inputVector = new Vector3(1, 0, 0);
+	private void Update() {
+		inputNumber = GameState.i.GetPlayerInputNumber(playerNumber);
+		if (inputNumber != -1) {
+			UpdateState();
 		}
+	}
 
-		if (inputVector.x < -0.3 && changeHeroTimer <= 0) {
-			if (chosenHero == 0) {
+	private void UpdateState() {
+		switch (playerState) {
+			case PlayerState.NO_PLAYER:
+				JoinPlayer();
+				break;
+			case PlayerState.JOINED when Input.GetButtonDown(InputBack):
+				LeavePlayer();
+				break;
+			case PlayerState.JOINED when Input.GetButtonDown(InputConfirm):
+				ReadyPlayer();
+				break;
+			case PlayerState.JOINED:
+				ChooseHero();
+				break;
+			case PlayerState.READY when Input.GetButtonDown(InputBack):
+				NotReadyPlayer();
+				break;
+		}
+	}
+
+	private void JoinPlayer() {
+		if (inputNumber >= 0) {
+			playerState = PlayerState.JOINED;
+		}
+	}
+
+	private void LeavePlayer() {
+		playerState = PlayerState.NO_PLAYER;
+		inputNumber = -1;
+		GameState.i.RemovePlayerController(playerNumber);
+
+		heroImage.color = Color.clear;
+		heroName.text = "";
+	}
+
+	private void ReadyPlayer() {
+		playerState = PlayerState.READY;
+		heroImage.color = Color.green;
+		var hero = HeroList.Heroes[chosenHero];
+		GameState.i.addHero(hero, playerNumber);
+	}
+
+	private void NotReadyPlayer() {
+		playerState = PlayerState.JOINED;
+		GameState.i.removeHero(playerNumber);
+		heroImage.color = Color.white;
+	}
+
+	private void ChooseHero() {
+		var inputVector = new Vector3(Input.GetAxis(InputHorizontal), 0, Input.GetAxis(InputVertical));
+
+		if (inputVector == Vector3.zero || inputVector.x > -0.2 && inputVector.x < 0.2) {
+			playerChanged = false;
+		} else if ((inputVector.x < -0.8 || inputVector.x > 0.8) && !playerChanged) {
+			playerChanged = true;
+			chosenHero += inputVector.x > 0 ? 1 : -1;
+			if (chosenHero < 0) {
 				chosenHero = HeroList.Heroes.Count - 1;
-			} else {
-				chosenHero -= 1;
-			}
-
-			changeHeroTimer = 1;
-		} else if (inputVector.x > 0.3 && changeHeroTimer <= 0) {
-			if (chosenHero == HeroList.Heroes.Count - 1) {
+			} else if (chosenHero >= HeroList.Heroes.Count) {
 				chosenHero = 0;
-			} else {
-				chosenHero += 1;
 			}
-
-			changeHeroTimer = timeToChangeHero;
 		}
 
 		heroName.text = HeroList.Heroes[chosenHero].name;
 		heroImage.sprite = HeroList.Heroes[chosenHero].heroImage;
-		heroImage.color = new Color(255, 255, 255, 255);
-	}
-
-	void joinGame() {
-		bool joinGame = Input.GetButtonDown(InputConfirm);
-		bool leaveGame = Input.GetButtonDown(InputBack);
-
-		if (!ready && joinGame) {
-			joined = true;
-		} else if (joined && leaveGame) {
-			joined = false;
-			heroImage.color = new Color(255, 255, 255, 0);
-			heroName.text = "";
-		}
-	}
-
-	void changeScene() {
-		bool start = Input.GetButtonDown(INPUT_START);
-		if (start && GameState.i.Players.Count >= 2) {
-			SceneManager.LoadScene("SampleScene");
-		}
-	}
-
-	// Update is called once per frame
-	void Update() {
-		changeHeroTimer -= Time.deltaTime;
-		setReady();
-		joinGame();
-		changeScene();
-		if (joined) {
-			changeHero();
-		}
+		heroImage.color = Color.white;
 	}
 }

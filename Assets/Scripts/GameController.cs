@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 	
@@ -12,7 +13,7 @@ public class GameController : MonoBehaviour {
 	public List<Vector3> spawnPoints;
 
 	private void Start() {
-		var numberOfPlayers = GameState.i.Players.Count;
+		var numberOfPlayers = GameState.i.ReadyPlayers.Count;
 		for (var i = 0; i < numberOfPlayers; i++) {
 			CreatePlayerSpawner(i);
 		}
@@ -27,5 +28,11 @@ public class GameController : MonoBehaviour {
 	private void OnDrawGizmos() {
 		Gizmos.color = Color.green;
 		spawnPoints.ForEach(pos => { Gizmos.DrawWireSphere(pos, 0.3f); });
+	}
+
+	private void Update() {
+		if (Input.GetKeyDown(KeyCode.Escape)) {
+			SceneManager.LoadScene("Lobby");
+		}
 	}
 }

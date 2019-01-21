@@ -1,72 +1,77 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class GameState : MonoBehaviour
-{
-    [System.Serializable]
-    public struct PlayerHero
-    
-    {
-        public string heroName;
-        public Sprite heroImage;
-        public int playerNumber;
-    }
-    public static GameState i;
+public class GameState : MonoBehaviour {
+	[System.Serializable]
+	public struct PlayerHero {
+		public string heroName;
+		public Sprite heroImage;
+		public int playerNumber;
+	}
 
-    public List<PlayerHero> Players;
+	public static GameState i;
 
-    public void addHero(string name, Sprite image, int playerNumber)
-    {
-        PlayerHero newHero;
-        newHero.heroName = name;
-        newHero.heroImage = image;
-        newHero.playerNumber = playerNumber;
+	public List<PlayerHero> ReadyPlayers;
 
-        Players.Add(newHero);
-    }
+	private readonly int[] playerInputControllers = {-1, -1, -1, -1};
 
-    public void removeHero(string name)
-    {
-        Players.RemoveAt(searchHeroes(name));
-    }
+	private void Awake() {
+		if (i == null) {
+			i = this;
+			DontDestroyOnLoad(gameObject);
+		} else {
+			Destroy(gameObject);
+		}
+	}
 
-    private int searchHeroes(string name)
-    {
-        int index = -1;
-        for (int i = 0; i < Players.Count; i++)
-        {
-            if (Players[i].heroName == name)
-            {
-                index = i;
-            }
-        }
+	public void AddPlayerController(int inputControllerNumber) {
+		var playerNumber = GetEmptyPlayerNumber();
+		if (playerNumber >= 0 && !playerInputControllers.Contains(inputControllerNumber)) {
+			playerInputControllers[playerNumber] = inputControllerNumber;
+		}
+	}
 
-        return index;
-    }
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        DontDestroyOnLoad(this.gameObject);
-    }
+	public void RemovePlayerController(int playerNumber) {
+		playerInputControllers[playerNumber] = -1;
+	}
 
-    private void Awake()
-    {
-        if (i == null)
-        {
-            i = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-    }
+	private int GetEmptyPlayerNumber() {
+		for (var playerNumber = 0; playerNumber < 4; playerNumber++) {
+			if (playerInputControllers[playerNumber] == -1) {
+				return playerNumber;
+			}
+		}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+		return -1;
+	}
+
+	public bool IsAllPlayersReady() {
+		return ReadyPlayers.Count > 1 && ReadyPlayers.Count == GetPlayersCount();
+	}
+
+	public int GetPlayersCount() {
+		return playerInputControllers.Count(c => c != -1);
+	}
+
+	public int GetPlayerInputNumber(int playerNumber) {
+		return playerInputControllers[playerNumber];
+	}
+
+
+	public void addHero(HeroList.HeroData hero, int playerNumber) {
+		PlayerHero newHero;
+		newHero.heroName = hero.name;
+		newHero.heroImage = hero.heroImage;
+		newHero.playerNumber = playerNumber;
+
+		ReadyPlayers.Add(newHero);
+	}
+
+	public void removeHero(int playerNumber) {
+		var index = ReadyPlayers.FindIndex(h => h.playerNumber.Equals(playerNumber));
+		if (index >= 0) {
+			ReadyPlayers.RemoveAt(index);
+		}
+	}
 }

@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour {
 	public void SetPlayer(int playerNumber) {
 		this.playerNumber = playerNumber;
 		weapon.playerNumber = playerNumber;
-		view.Init(GameState.i.Players[playerNumber]);
+		view.Init(GameState.i.ReadyPlayers[playerNumber]);
 	}
 
 	private void OnDrawGizmos() {

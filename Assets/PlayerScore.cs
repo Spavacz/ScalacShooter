@@ -1,12 +1,12 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using TMPro;
+using UnityEngine;
 
 public class PlayerScore : MonoBehaviour {
 	public int playerNumber;
-	private Text text;
+	private TextMeshProUGUI text;
 
 	void Start() {
-		text = GetComponent<Text>();
+		text = GetComponent<TextMeshProUGUI>();
 	}
 
 	void Update() {
